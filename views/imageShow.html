@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>搭配Ajax展示图片</title>
+  <style>
+    #img {
+      width: 800px;
+      height: 540px;
+      margin: 10px auto;
+    }
+    #img img {
+      width: 100%;
+      height: 100%;
+    }
+    #btns {
+      width: 800px;
+      height: 100px;
+      margin: 0 auto;
+    }
+    #previous {
+      width: 180px;
+      height: 90px;
+      font-size: 40px;
+    }
+    #next {
+      width: 180px;
+      height: 90px;
+      float: right;
+      font-size: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div id="img">
+    
+  </div>
+  <p id="btns">
+    <button id="previous">上一页</button>
+    <button id="next">下一页</button>
+  </p>
+  <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+  <script>
+    function getImg (url) {
+      $.get(url).then((data) => {
+        console.log(data)
+        data = JSON.parse(data)
+        var result = `<img src="${data['image']}">`
+        $('#img').html(result)
+      })
+    }
+    getImg('/img/?index=0')
+    var index = 0
+    $('#previous').click(function () {
+      if (index === 0) {
+        return alert('已经没有前一张了...')
+      }
+      index--
+      getImg(`/img/?index=${index}`)
+    })
+    $('#next').click(function () {
+      if (index === 3) {
+        return alert('最后一张啦！')
+      }
+      index++
+      getImg(`/img/?index=${index}`)
+    })
+  </script>
+</body>
+</html>
